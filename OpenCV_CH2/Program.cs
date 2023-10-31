@@ -125,9 +125,9 @@ namespace OpenCV_CH2
             //    {
             //        capture.Open(@"C:\Users\USER\Desktop\Star.mp4");
             //    }
-                
+
             //    capture.Read(frame);
-                
+
             //    Cv2.ImShow("VideoFrame", frame); 
             //    int key = Cv2.WaitKey(33); //33밀리세컨 단위의 시간을 키입력 대기
             //    if (key == 4) 
@@ -150,7 +150,7 @@ namespace OpenCV_CH2
             //        videoWriter.Write(frame);
             //    }    
             //}
-            
+
             //videoWriter.Release();
             //capture.Release();
             //Cv2.DestroyAllWindows();
@@ -175,8 +175,44 @@ namespace OpenCV_CH2
 
             //Cv2.InRange(Mat src, Scalar lowerb, Scalar upperb, Mat dst); // 배열 요소의 범위 설정 함수
 
-            Mat image = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.webp");
-            Cv2.ImShow("gg",image);
+            //Mat image = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg"); // read image
+            //Mat hsv = new Mat(image.Size(), MatType.CV_8UC3); // hsv 객체
+            //Mat dst = new Mat(image.Size(), MatType.CV_8UC3); // 출력 객체
+
+            //Cv2.CvtColor(image, hsv, ColorConversionCodes.BGR2HSV); // image 색상 공간 변환
+            //Mat[] HSV = Cv2.Split(hsv); // 채널 분리
+            //Mat H_orange = new Mat(image.Size(), MatType.CV_8UC1); //mat 객체
+            //Cv2.InRange(HSV[0], new Scalar(8), new Scalar(20), H_orange); // 배열 요소의 범위 설정
+
+            //Cv2.BitwiseAnd(hsv, hsv, dst, H_orange); // 마스크를 씌운다 ??
+            //Cv2.CvtColor(dst, dst, ColorConversionCodes.HSV2BGR); // HSV 색상 공간을 다시 BGR로
+
+            //Cv2.ImShow("orange", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            //Cv2.AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst, int dtype = 1);// 배열 병합 함수 
+
+            Mat pic = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg"); // read image
+            Mat hsv = new Mat(pic.Size(), MatType.CV_8UC3);
+            Mat lower_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            Mat upper_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            Mat added_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            Mat dst = new Mat(pic.Size(), MatType.CV_8UC3);
+
+            Cv2.CvtColor(pic, hsv, ColorConversionCodes.BGR2HSV);// pic를 hsv로 반환, bgr to hsv 
+
+            Cv2.InRange(hsv, new Scalar(0, 100, 100), new Scalar(5, 255, 255), lower_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 lower_red로 반환
+            Cv2.InRange(hsv, new Scalar(170, 100, 100), new Scalar(179, 255, 255), upper_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 upper_red로 반환
+            Cv2.AddWeighted(lower_red, 1.0, upper_red, 1.0, 0.0, added_red); // 배열 병합 : lower_red*1.0 + upper_red*1.0 + gamma(0.0)
+
+            Cv2.BitwiseAnd(hsv, hsv, dst, added_red);
+            Cv2.CvtColor(dst, dst, ColorConversionCodes.HSV2BGR); // dst를 dst로 반환 , HSV to BGR
+
+            Cv2.ImShow("dst", dst);
+            Cv2.WaitKey(0);
+            Cv2.DestroyAllWindows();
+
         }
 
         private static void Event(int pos, IntPtr userdata) // callback 함수에 전달할 매개변수 함수
