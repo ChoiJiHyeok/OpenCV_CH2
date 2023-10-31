@@ -157,16 +157,26 @@ namespace OpenCV_CH2
 
             //Cv2.CvtColor(Mat src, Mat dst, ColorConversionCodes code, int dstCn = 0); // 색상 공간 변환 함수
 
-            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\bird.jpg"); // 입력 이미지
-            Mat dst = new Mat(src.Size(), MatType.CV_8UC1); // 출력 이미지
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\bird.jpg"); // 입력 이미지
+            //Mat dst = new Mat(src.Size(), MatType.CV_8UC1); // 출력 이미지
 
-            Cv2.CvtColor(src, dst, ColorConversionCodes.BGR2GRAY); // 색상 공간 변환 함수
+            //Cv2.CvtColor(src, dst, ColorConversionCodes.BGR2GRAY); // 색상 공간 변환 함수
 
-            Cv2.ImShow("dst", dst); // show img 12
-            Cv2.WaitKey(0);
-            Cv2.DestroyAllWindows();
+            //Cv2.ImShow("dst", dst); // show img 12
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
 
             // 원본 이미지 색상 공간2결과 이미지 색상 공간
+
+            //채널 분리 함수
+
+            //Mat[] mv = Cv2.Split(Mat src);  // 채널 분리 함수
+            //Cv2.Merge(Mat[] mv, Mat dst); // 채널 병합 함수
+
+            //Cv2.InRange(Mat src, Scalar lowerb, Scalar upperb, Mat dst); // 배열 요소의 범위 설정 함수
+
+            Mat image = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.webp");
+            Cv2.ImShow("gg",image);
         }
 
         private static void Event(int pos, IntPtr userdata) // callback 함수에 전달할 매개변수 함수
