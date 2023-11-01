@@ -193,25 +193,85 @@ namespace OpenCV_CH2
 
             //Cv2.AddWeighted(Mat src1, double alpha, Mat src2, double beta, double gamma, Mat dst, int dtype = 1);// 배열 병합 함수 
 
-            Mat pic = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg"); // read image
-            Mat hsv = new Mat(pic.Size(), MatType.CV_8UC3);
-            Mat lower_red = new Mat(pic.Size(), MatType.CV_8UC3);
-            Mat upper_red = new Mat(pic.Size(), MatType.CV_8UC3);
-            Mat added_red = new Mat(pic.Size(), MatType.CV_8UC3);
-            Mat dst = new Mat(pic.Size(), MatType.CV_8UC3);
+            //Mat pic = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg"); // read image
+            //Mat hsv = new Mat(pic.Size(), MatType.CV_8UC3);
+            //Mat lower_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            //Mat upper_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            //Mat added_red = new Mat(pic.Size(), MatType.CV_8UC3);
+            //Mat dst = new Mat(pic.Size(), MatType.CV_8UC3);
 
-            Cv2.CvtColor(pic, hsv, ColorConversionCodes.BGR2HSV);// pic를 hsv로 반환, bgr to hsv 
+            //Cv2.CvtColor(pic, hsv, ColorConversionCodes.BGR2HSV);// pic를 hsv로 반환, bgr to hsv 
 
-            Cv2.InRange(hsv, new Scalar(0, 100, 100), new Scalar(5, 255, 255), lower_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 lower_red로 반환
-            Cv2.InRange(hsv, new Scalar(170, 100, 100), new Scalar(179, 255, 255), upper_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 upper_red로 반환
-            Cv2.AddWeighted(lower_red, 1.0, upper_red, 1.0, 0.0, added_red); // 배열 병합 : lower_red*1.0 + upper_red*1.0 + gamma(0.0)
+            //Cv2.InRange(hsv, new Scalar(0, 100, 100), new Scalar(5, 255, 255), lower_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 lower_red로 반환
+            //Cv2.InRange(hsv, new Scalar(170, 100, 100), new Scalar(179, 255, 255), upper_red); // hsv를 scalar(0, 100, 100), scalar(5, 255, 255)사이의 요소를 검출해 upper_red로 반환
+            //Cv2.AddWeighted(lower_red, 1.0, upper_red, 1.0, 0.0, added_red); // 배열 병합 : lower_red*1.0 + upper_red*1.0 + gamma(0.0)
 
-            Cv2.BitwiseAnd(hsv, hsv, dst, added_red);
-            Cv2.CvtColor(dst, dst, ColorConversionCodes.HSV2BGR); // dst를 dst로 반환 , HSV to BGR
+            //Cv2.BitwiseAnd(hsv, hsv, dst, added_red);
+            //Cv2.CvtColor(dst, dst, ColorConversionCodes.HSV2BGR); // dst를 dst로 반환 , HSV to BGR
 
-            Cv2.ImShow("dst", dst);
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            //Cv2.Threshold(Mat src, Mat dst, double thresh, double maxval, ThresholdTypes type); // 이진화 함수 
+
+
+            //Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
+            //Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
+            //Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
+
+            //Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
+            //Cv2.Threshold(gray, binary, 127, 255, ThresholdTypes.Otsu); // 이진화, 임계값 : 127, 최대값 : 255 gray를 이진화 해서 변형해서 binary에 저장, Otsu type
+
+            //Cv2.ImShow("binary", binary);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            //적응형 이진화(adaptive binarization)
+
+            //Cv2.AdaptiveThreshold(Mat src, Mat dst, double maxValue, AdaptiveThresholdTypes adaptiveMethod, ThresholdTypes thresholdType, int bolckSize, double c);
+
+            Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
+            Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
+            Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
+
+            Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
+            Cv2.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdTypes.GaussianC, ThresholdTypes.Binary, 25, 5); // 
+
+            Cv2.ImShow("binary", binary);
             Cv2.WaitKey(0);
             Cv2.DestroyAllWindows();
+
+            // 이미지 연산
+            //Cv2.Add(Mat src1, Mat src2, Mat dst, Mat mask = null, int dtype = -1);// 덧셈 함수
+
+            //Cv2.Subtract(Mat src1, Mat src2, Mat dst, Mat mask = null, int dtype = -1);// 뺄샘 함수
+
+            //Cv2.Multiply(Mat src1, Mat src2, Mat dst, double scale = 1, int dtype = -1);// 곱셈 함수
+
+            //Cv2.Divide(Mat src1, Mat src2, Mat dst, double scale = 1, int dtype = -1);// 나눗셈 함수
+
+            //Cv2.Max(Mat src1, Mat src2, Mat dst);// 최댓값 함수
+
+            //Cv2.Min(Mat src1, Mat src2, Mat dst);// 최솟값 함수
+
+            //Cv2.MinMaxLoc(Mat src, out double minVal, out double maxVal, out Point minLoc, out Point maxLoc); //최소 최대 위치 반환 함수
+
+            //Cv2.Abs(Mat src); // 절대값 함수
+
+            //Cv2.Absdiff(Mat src1, Mat src2, Mat dst); // 절대값 차이 함수
+
+            //Cv2.Compare(Mat src1, Mat src2, Mat dst, CmpType cmpop); // 비교 함수
+
+            //success = Cv2.Solve(Mat src1, Mat src2, Mat dst, DecompTypes.LU); // 선형 방정식 시스템의 해 찾기 함수
+
+            //Cv2.BitwiseAnd(Mat src1, Mat src2, Mat dst, Mat mask = null); // AND 연산 함수
+
+            //Cv2.BitwiseOr(Mat src1, Mat src2, Mat dst, Mat mask = null); // OR 연산 함수
+
+            //Cv2.BitwiseXor(Mat src1, Mat src2, Mat dst, Mat mask = null); // XOR 연산 함수
+
+            //Cv2.BitwiseNot(Mat src1, Mat src2, Mat dst, Mat mask = null); // NOT 연산 함수
 
         }
 
