@@ -231,16 +231,16 @@ namespace OpenCV_CH2
 
             //Cv2.AdaptiveThreshold(Mat src, Mat dst, double maxValue, AdaptiveThresholdTypes adaptiveMethod, ThresholdTypes thresholdType, int bolckSize, double c);
 
-            Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
-            Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
-            Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
+            //Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
+            //Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
+            //Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
 
-            Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
-            Cv2.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdTypes.GaussianC, ThresholdTypes.Binary, 25, 5); // 
+            //Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
+            //Cv2.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdTypes.GaussianC, ThresholdTypes.Binary, 25, 5); // 
 
-            Cv2.ImShow("binary", binary);
-            Cv2.WaitKey(0);
-            Cv2.DestroyAllWindows();
+            //Cv2.ImShow("binary", binary);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
 
             // 이미지 연산
             //Cv2.Add(Mat src1, Mat src2, Mat dst, Mat mask = null, int dtype = -1);// 덧셈 함수
@@ -273,13 +273,54 @@ namespace OpenCV_CH2
 
             //Cv2.BitwiseNot(Mat src1, Mat src2, Mat dst, Mat mask = null); // NOT 연산 함수
 
+            ///
+            ///Example
+            ///
+            //Mat src1 = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg");
+            //Mat dst = new Mat(src1.Size(), MatType.CV_8UC3);
+
+            //Cv2.Compare(src1, new Scalar(200, 127, 100), dst, CmpType.GT); /* 비교연산, 배열과 스칼라의 요소별 비교 연산, src1이 src2보다 요소가 큼, src1의 BGR요소의 값이 200, 127, 100보다 큰 경우
+            //요소값 유지 나머지 요소는 0으로 변경 */
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+
+            //흐림효과
+            //Cv2.Blur(Mat src, Mat dst, OpenCvSharp.Size ksize, OpenCvSharp.Point? anchor = null, BorderTypes borderType = BorderTypes.Reflect101); // 단순 흐림 효과
+
+            //Cv2.BoxFilter(Mat src, Mat dst, MatType ddepth, OpenCvSharp.Size ksize, OpenCvSharp.Point? anchor = null, bool normalize = true, BorderTypes borderType = BorderTypes.Reflect101); // 박스 필터 흐림 효과
+
+            ///
+            ///normalize = true 일경우 정규화된 박스 필터(normalized filter)로 변경, 모든 값이 커널의 개수(면적)만큼 나눠진다.
+            ///
+
+            //Cv2.MedianBlur(Mat src, Mat dst, OpenCvSharp.Size ksize);  // 중간값 흐림 효과
+            //Cv2.GaussianBlur(Mat src, Mat dst, OpenCvSharp.Size ksize, double sigmaX, double sigmaY, BorderTypes borderType = BorderTypes.Reflect101); // 가우시안 흐림 효과
+
+            //Cv2.BilateralFilter(Mat src, Mat dst, int d, double sigmaColor, double sigmaSpace, BorderTypes borderType = BorderTypes.Reflect101); // 양방향 필터 효과
+
+
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg");
+            //Mat dst = new Mat(src.Size(), MatType.CV_8UC3);
+
+            //Cv2.GaussianBlur(src, dst, new OpenCvSharp.Size(9, 9), 3, 3, BorderTypes.Isolated);//kernel 크기 9x9, x방향 가우스 커널 표준 편차: 3, y방향 가우스 커널 표준 편차: 3 
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            //Cv2.PyrUp(Mat src, Mat dst, OpenCvSharp.Size ? dstSize = null, BorderTypes borderType = BorderTypes.Reflect101); // 이미지 확대
+
+            Cv2.PyrDown(Mat src, Mat dst, OpenCvSharp.Size ? dstSize = null, BorderTypes borderType = BorderTypes.Reflect101); // 이미지 축소
         }
 
-        private static void Event(int pos, IntPtr userdata) // callback 함수에 전달할 매개변수 함수
-        {
-            Mat color = new Mat(userdata);
-            color.SetTo(new Scalar(pos, pos, pos));
-            Cv2.ImShow("Pallete", color);
-        }
+        //private static void Event(int pos, IntPtr userdata) // callback 함수에 전달할 매개변수 함수
+        //{
+        //    Mat color = new Mat(userdata);
+        //    color.SetTo(new Scalar(pos, pos, pos));
+        //    Cv2.ImShow("Pallete", color);
+        //}
     }
 }
