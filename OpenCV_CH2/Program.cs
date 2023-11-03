@@ -347,21 +347,54 @@ namespace OpenCV_CH2
 
             //Mat matrix = Cv2.GetRotationMatrix2D(Point2f center, double angle, double scale); // Center 중심좌표, scale 비율, angle 회전 각도 
 
-            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\glass.jpg");
-            Mat dst = new Mat();
-            Mat dst1= new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
-            
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\glass.jpg");
+            //Mat dst = new Mat();
+            //Mat dst1= new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
 
-            Cv2.Flip(src, dst, FlipMode.Y); // y축 기준 대칭
 
-            Mat matrix = Cv2.GetRotationMatrix2D(new Point2f(src.Width / 2, src.Height / 2), 90.0, 1.0); // 이미지 중심점 기준, 1비율, 반시계 방향 90도 회전
+            //Cv2.Flip(src, dst, FlipMode.Y); // y축 기준 대칭
 
-            Cv2.WarpAffine(dst, dst, matrix, new Size(src.Width, src.Height));
+            //Mat matrix = Cv2.GetRotationMatrix2D(new Point2f(src.Width / 2, src.Height / 2), 90.0, 1.0); // 이미지 중심점 기준, 1비율, 반시계 방향 90도 회전
+
+            //Cv2.WarpAffine(dst, dst, matrix, new Size(src.Width, src.Height));
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            //Mat M = Cv2.GetAffineTransform(IEnumerable<Point2f> src, IEnumerable<Point2f> dst);// 아핀 맵 행렬 생성 함수
+
+            //Cv2.WarpAffine(Mat src, Mat dst, Mat m, OpenCvSharp.Size dsize, InterpolationFlags flags = InterpolationFlags.Linear, BorderTypes borderMode = BorderTypes.Constant, Scalar ? borderValue = null); // 아핀 변환 함수
+
+            // 원근 변환
+            //Mat m = Cv2.GetPerspectiveTransform(IEnumerable < Point2f > src, IEnumerable < Point2f > dst); // 원근맵 행렬 생성 함수
+
+            //Cv2.WarpPerspective(Mat src, Mat dst, Mat M, OpenCvSharp.Size dsize, InterpolationFlags flags = InterpolationFlags.Linear, BorderTypes borderMode = BorderTypes.Constant, Scalar ? borderValue = null); // 원근 변환 함수
+
+            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\cloud.jpg");
+            Mat dst = new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
+
+            List<Point2f> src_pts = new List<Point2f>()
+            {
+                new Point2f(0.0f, 0.0f),
+                new Point2f(0.0f, src.Height),
+                new Point2f(src.Width, src.Height)
+            };
+
+             List<Point2f> dst_pts = new List<Point2f>()
+            {
+                new Point2f(300.0f, 300.0f),
+                new Point2f(300.0f, src.Height),
+                new Point2f(src.Width - 400.0f, src.Height-200.0f)
+            };
+
+            Mat M = Cv2.GetAffineTransform(src_pts, dst_pts);
+
+            Cv2.WarpAffine(src, dst, M, new OpenCvSharp.Size(src.Width, src.Height), borderValue: new Scalar(127, 127, 127, 0));
 
             Cv2.ImShow("dst", dst);
             Cv2.WaitKey(0);
             Cv2.DestroyAllWindows();
-
 
         }
 
