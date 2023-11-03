@@ -313,7 +313,56 @@ namespace OpenCV_CH2
 
             //Cv2.PyrUp(Mat src, Mat dst, OpenCvSharp.Size ? dstSize = null, BorderTypes borderType = BorderTypes.Reflect101); // 이미지 확대
 
-            Cv2.PyrDown(Mat src, Mat dst, OpenCvSharp.Size ? dstSize = null, BorderTypes borderType = BorderTypes.Reflect101); // 이미지 축소
+            //Cv2.PyrDown(Mat src, Mat dst, OpenCvSharp.Size ? dstSize = null, BorderTypes borderType = BorderTypes.Reflect101); // 이미지 축소
+
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg");
+
+            //Mat dst = new Mat(src.Size(), MatType.CV_8UC3);
+
+            ////Cv2.PyrUp(src, dst, new OpenCvSharp.Size(src.Width*2+1, src.Height*2-1)); //  src.Width*2+1, src.Height*2-1만큼 이미지 확대
+            //Cv2.PyrDown(src, dst, new OpenCvSharp.Size(src.Width/2,src.Height/2));
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            // 이미지 크기 조절
+            //Cv2.Resize(Mat src, Mat dst, OpenCvSharp.Size dsize, double fx = 0, double fy = 0, InterpolationFlags interpolation = InterpolationFlags.Linear);
+
+            //Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\tomato.jpg");
+            //Mat dst = new Mat(new OpenCvSharp.Size(1, 1), MatType.CV_8UC3);
+
+            //dst = picture.SubMat(280, 310, 240, 405);
+            //Cv2.Resize(dst, dst, new OpenCvSharp.Size(9999, 0), 2.0, 2.0, InterpolationFlags.Cubic);
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+
+
+            // 대칭 회전
+            //Cv2.Flip(Mat src, Mat dst, FlipMode flipcode);  // 대칭 함수
+
+            // 회전 행렬
+
+            //Mat matrix = Cv2.GetRotationMatrix2D(Point2f center, double angle, double scale); // Center 중심좌표, scale 비율, angle 회전 각도 
+
+            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\glass.jpg");
+            Mat dst = new Mat();
+            Mat dst1= new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
+            
+
+            Cv2.Flip(src, dst, FlipMode.Y); // y축 기준 대칭
+
+            Mat matrix = Cv2.GetRotationMatrix2D(new Point2f(src.Width / 2, src.Height / 2), 90.0, 1.0); // 이미지 중심점 기준, 1비율, 반시계 방향 90도 회전
+
+            Cv2.WarpAffine(dst, dst, matrix, new Size(src.Width, src.Height));
+
+            Cv2.ImShow("dst", dst);
+            Cv2.WaitKey(0);
+            Cv2.DestroyAllWindows();
+
+
         }
 
         //private static void Event(int pos, IntPtr userdata) // callback 함수에 전달할 매개변수 함수
