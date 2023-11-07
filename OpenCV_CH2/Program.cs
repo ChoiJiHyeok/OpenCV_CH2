@@ -371,30 +371,77 @@ namespace OpenCV_CH2
 
             //Cv2.WarpPerspective(Mat src, Mat dst, Mat M, OpenCvSharp.Size dsize, InterpolationFlags flags = InterpolationFlags.Linear, BorderTypes borderMode = BorderTypes.Constant, Scalar ? borderValue = null); // 원근 변환 함수
 
-            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\cloud.jpg");
-            Mat dst = new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\cloud.jpg");
+            //Mat dst = new Mat(new OpenCvSharp.Size(src.Width, src.Height), MatType.CV_8UC3);
 
-            List<Point2f> src_pts = new List<Point2f>()
-            {
-                new Point2f(0.0f, 0.0f),
-                new Point2f(0.0f, src.Height),
-                new Point2f(src.Width, src.Height)
-            };
+            //List<Point2f> src_pts = new List<Point2f>() // 변환전 세개의 픽셀 좌표
+            //{
+            //    new Point2f(0.0f, 0.0f),
+            //    new Point2f(0.0f, src.Height),
+            //    new Point2f(src.Width, src.Height)
+            //};
 
-             List<Point2f> dst_pts = new List<Point2f>()
-            {
-                new Point2f(300.0f, 300.0f),
-                new Point2f(300.0f, src.Height),
-                new Point2f(src.Width - 400.0f, src.Height-200.0f)
-            };
+            // List<Point2f> dst_pts = new List<Point2f>()  // 변환후 세개의 픽셀 좌표
+            //{
+            //    new Point2f(300.0f, 300.0f),
+            //    new Point2f(300.0f, src.Height),
+            //    new Point2f(src.Width - 400.0f, src.Height-200.0f)
+            //};
 
-            Mat M = Cv2.GetAffineTransform(src_pts, dst_pts);
+            //Mat M = Cv2.GetAffineTransform(src_pts, dst_pts); // 아핀 맵 행렬 생성
 
-            Cv2.WarpAffine(src, dst, M, new OpenCvSharp.Size(src.Width, src.Height), borderValue: new Scalar(127, 127, 127, 0));
+            //Cv2.WarpAffine(src, dst, M, new OpenCvSharp.Size(src.Width, src.Height), borderValue: new Scalar(127, 127, 127, 0)); 
+            ////아핀 변환 함수, 입력 이미지(src)에 아핀맵 행렬 적용(M), 출력 이미지 크기(dsize)고 변형해 출력 이미지(dst)로 반환, 테두리 색상(borderValue)은 변환 후 발생한 공간에 할당할 색상
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            // morphological
+            /* 모폴로지 변환(morphologiacal tranformations)은 영상이나 이미지를 형태학적 적급하는 기법
+             * 주로 영상내 픽셀값 대체에 사용
+             * 오이즈 제거, 요소 결합 및 분리, 강도 피크 검출등에 이용
+             * 집합의 포함 관계, 이동(translation), 대칭(reflection), 여집합(complement), 차집합(difference)등의 성질 이용
+             * 기본 변환으로 팽창(dilation)과 침식(erosion)이 있음
+             * 팽창 : 커널(kernel) 영역 안에 존재하는 모든 픽셀의 값을 커널 내부의 극댓값(local maxium)으로 대체, 구조 요소(element)를 활용해 이웃한 픽셀을 최대 픽셀값으로 대체, 
+             * 어두운 영역이 줄고 밝은 영역이 늘어남,
+             * 커널 크기가 반복 횟수에 따라 스펙클(speckle)이 커지며 객체 내부의 홀(hole)이 사라진다.
+             * 침식 : 커널 영역 안에 존재하는 모든 픽셀의 값을 커널 내부의 극솟값(local minimum)으로 대체, 구조 요소를 활용해 이웃한 픽셀은 최소 픽셀값으로대체,
+             * 밝은 영역이 줄어들고 어두운 영역이 늘어남,
+             * speckle이 사라지며, hole이 커짐
+             */
+
+            ///
+            /// 구조 요소 생성 함수
+            ///
+            //Mat kernel = Cv2.GetStructuringElement(MorphShapes shape, new OpenCvSharp.Size ksize, new OpenCvSharp.Point anchor); 
+
+            /* 커널의 형태(shape)를 설정, 
+             * 직사각형(Rect), 십자가(Cross), 타원(Ellipse) 모양으로 구조 요소 생성
+             * anchor(고정점)은 필수 매개 변수 아님*/
+
+            // 팽창 함수
+            //Cv2.Dilate(Mat src, Mat dst, Mat kernel, new OpenCvSharp.Point? anchor = null, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar? borderValue = null);
+
+            //침식 함수
+            //Cv2.Erode(Mat src, Mat dst, Mat kernel, Point ? anchor = null, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar ? borderValue = null);       
+
+            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\flower.jpg");
+            Mat dst = new Mat();
+
+            Mat kernel = Cv2.GetStructuringElement(MorphShapes.Cross, new OpenCvSharp.Size(7, 7));
+            Cv2.Dilate(src, dst, kernel, new OpenCvSharp.Point(-1, -1), 3, BorderTypes.Reflect101, new Scalar(0));
 
             Cv2.ImShow("dst", dst);
             Cv2.WaitKey(0);
             Cv2.DestroyAllWindows();
+
+            // 모폴로지 연산 
+
+            // 팽창과 침식을 기본 연산으로 사용
+
+            //모폴로지 연산 함수
+            Mat dst1 = Cv2.MorphologyEx(Mat src, Mat dst, MorphTypes op, Mat kernel, Point ? anchor, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar ? borderValue = null);
 
         }
 
