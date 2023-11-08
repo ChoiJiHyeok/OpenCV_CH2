@@ -216,16 +216,20 @@ namespace OpenCV_CH2
             //Cv2.Threshold(Mat src, Mat dst, double thresh, double maxval, ThresholdTypes type); // 이진화 함수 
 
 
-            //Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
-            //Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
-            //Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
+            Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\swan.jpg"); // read image
+            Mat gray = new Mat(picture.Size(), MatType.CV_8UC1);
+            Mat binary = new Mat(picture.Size(), MatType.CV_8UC1);
 
-            //Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
+            Cv2.CvtColor(picture, gray, ColorConversionCodes.BGR2GRAY); // bgr to gray, picture를 gray로 반환
             //Cv2.Threshold(gray, binary, 127, 255, ThresholdTypes.Otsu); // 이진화, 임계값 : 127, 최대값 : 255 gray를 이진화 해서 변형해서 binary에 저장, Otsu type
+            Cv2.Threshold(gray, binary, 0, 255, ThresholdTypes.Triangle); // 최적의 임계값 계산, 삼각형 알고리즘 적용
 
-            //Cv2.ImShow("binary", binary);
-            //Cv2.WaitKey(0);
-            //Cv2.DestroyAllWindows();
+            double thresholdValue = Cv2.Threshold(gray, new Mat(), 0, 255, ThresholdTypes.Triangle); // theshold 계산
+            Console.WriteLine(thresholdValue.ToString()); 
+
+            Cv2.ImShow("binary", binary);
+            Cv2.WaitKey(0);
+            Cv2.DestroyAllWindows();
 
             //적응형 이진화(adaptive binarization)
 
@@ -426,22 +430,58 @@ namespace OpenCV_CH2
             //침식 함수
             //Cv2.Erode(Mat src, Mat dst, Mat kernel, Point ? anchor = null, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar ? borderValue = null);       
 
-            Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\flower.jpg");
-            Mat dst = new Mat();
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\flower.jpg");
+            //Mat dst = new Mat();
 
-            Mat kernel = Cv2.GetStructuringElement(MorphShapes.Cross, new OpenCvSharp.Size(7, 7));
-            Cv2.Dilate(src, dst, kernel, new OpenCvSharp.Point(-1, -1), 3, BorderTypes.Reflect101, new Scalar(0));
+            //Mat kernel = Cv2.GetStructuringElement(MorphShapes.Cross, new OpenCvSharp.Size(7, 7)); // kernel : 십자가 구조요소, 7x7
+            //Cv2.Dilate(src, dst, kernel, new OpenCvSharp.Point(-1, -1), 3, BorderTypes.Reflect101, new Scalar(0)); //팽창 , anchor : (-1, -1), iteration(팽창) : 3회, 테투리 색상(borderValue) : 이중픽셀X, 반사해서 확장
 
-            Cv2.ImShow("dst", dst);
-            Cv2.WaitKey(0);
-            Cv2.DestroyAllWindows();
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
 
             // 모폴로지 연산 
 
             // 팽창과 침식을 기본 연산으로 사용
 
             //모폴로지 연산 함수
-            Mat dst1 = Cv2.MorphologyEx(Mat src, Mat dst, MorphTypes op, Mat kernel, Point ? anchor, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar ? borderValue = null);
+            //Mat dst1 = Cv2.MorphologyEx(Mat src, Mat dst, MorphTypes op, Mat kernel, Point ? anchor, int iterations = 1, BorderTypes borderType = BorderTypes.Constant, Scalar ? borderValue = null);
+
+
+            //Mat picture = Cv2.ImRead(@"C:\Users\USER\Downloads\dandelion.jpg", ImreadModes.Grayscale); // 이미지를 그레이 스케일로 읽기
+            //Mat dst = new Mat();
+
+            //Mat kernel = Mat.Zeros(new OpenCvSharp.Size(7,7), MatType.CV_8UC1); // kernel 초기화, 7x7
+            //kernel[0, 7, 0, 1] = Mat.Ones(new OpenCvSharp.Size(1, 7), MatType.CV_8UC1); 
+            //kernel[0, 1, 0, 7] = Mat.Ones(new OpenCvSharp.Size(7, 1), MatType.CV_8UC1);
+            // // 첫번째 행과 열에 1의 요소를 할당
+            //Cv2.MorphologyEx(picture, dst, MorphTypes.HitMiss, kernel, iterations: 10);
+
+            //Cv2.ImShow("dst", dst);
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
+
+            // 소벨 연산
+            //Cv2.Sobel(Mat src, Mat dst, MatType ddepth, int xorder, int yorder, int ksize = 3, double scale = 1, double delta = 0, BorderTypes borderType = BorderTypes.Reflect101)
+
+            //Cv2.Scharr(Mat src, Mat dst, MatType ddepth, int xorder, int yorder, double scale, double delta, BorderTypes borderType = BorderTypes.Reflect101);//  샤르 연산 함수
+
+            // 라플라시안
+
+            //Cv2.Laplacian(Mat src, Mat dst, MatType ddepth, int ksize, double scale, double delta, BorderTypes borderType = BorderTypes.Reflect101) // 라플라시안 함수
+
+            // Canny Edge
+            //Cv2.Canny(Mat src, Mat dst, double threshold1, double threshold2, int apertureSize = 3, bool L2gradient = false) // 캐니 엣지 함수
+
+            //Mat src = Cv2.ImRead(@"C:\Users\USER\Downloads\book.jpg", ImreadModes.Grayscale);
+            //Mat dst = new Mat();
+
+            //Cv2.Sobel(src, dst, MatType.CV_8UC1, 1, 0, 3, 1, 0, BorderTypes.Reflect101); // 소벨 미분, x축 방향 1차 미분, y방향 미분x, kernel size = 3, scale(비율) = 1, delta(offset) = 0, 테두리 외삽법은 기본
+
+            //Cv2.ImShow("dst", dst);
+
+            //Cv2.WaitKey(0);
+            //Cv2.DestroyAllWindows();
 
         }
 
